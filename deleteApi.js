@@ -1,4 +1,5 @@
 const express = require('express');
+const mongodb = require('mongodb');
 
 const dbConnect = require('./mongodb');
 
@@ -47,6 +48,15 @@ app.put('/:name', async (req, res) => {
 
 	res.send({ name: 'update api' });
 	console.log(req.body);
+});
+
+app.delete('/:id', async (req, res) => {
+	const data = await dbConnect();
+	const result = await data.deleteOne({
+		_id: new mongodb.ObjectId(req.params.id),
+	});
+	console.log(req.params.id);
+	res.send(result);
 });
 
 app.listen(5000, () => {
